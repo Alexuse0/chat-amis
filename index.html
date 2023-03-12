@@ -34,5 +34,29 @@
       form.appendChild(button);
       document.body.appendChild(form);
     </script>
+    <div id="chat-container">
+  <ul id="messages"></ul>
+  <form id="message-form">
+    <input id="message-input" type="text" autocomplete="off">
+    <button>Send</button>
+  </form>
+</div>
+
+<script>
+  var messages = document.getElementById('messages');
+  var form = document.getElementById('message-form');
+  var input = document.getElementById('message-input');
+
+  form.addEventListener('submit', function(event) {
+    event.preventDefault();
+    if (input.value) {
+      var li = document.createElement('li');
+      li.innerText = input.value;
+      messages.appendChild(li);
+      input.value = '';
+    }
+  });
+</script>
+
   </body>
 </html>
