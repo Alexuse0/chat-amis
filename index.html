@@ -1,62 +1,35 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="UTF-8">
-    <title>Chat entre amis</title>
-  </head>
-  <body>
-    <h1>Bienvenue sur le chat entre amis</h1>
-    <div id="chat-container"></div>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.4.1/socket.io.js"></script>
-    <script>
-      const socket = io();
-      const chatContainer = document.getElementById("chat-container");
-      const form = document.createElement("form");
-      const input = document.createElement("input");
-      const button = document.createElement("button");
+<head>
+	<title>Chat entre amis</title>
+</head>
+<body>
+	<h1>Chat entre amis</h1>
+	<div id="messages"></div>
+	<form>
+		<input type="text" id="message">
+		<button type="submit" id="send">Envoyer</button>
+	</form>
 
-      form.addEventListener("submit", (event) => {
-        event.preventDefault();
-        const message = input.value;
-        input.value = "";
-        socket.emit("chat message", message);
-      });
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+	<script>
+		var messages = [];
 
-      socket.on("chat message", (message) => {
-        const listItem = document.createElement("li");
-        listItem.innerText = message;
-        chatContainer.appendChild(listItem);
-      });
+		function displayMessages() {
+			var html = '';
+			for (var i = 0; i < messages.length; i++) {
+				html += '<p>' + messages[i] + '</p>';
+			}
+			$('#messages').html(html);
+		}
 
-      input.placeholder = "Ecrivez votre message ici...";
-      button.innerText = "Envoyer";
-      form.appendChild(input);
-      form.appendChild(button);
-      document.body.appendChild(form);
-    </script>
-    <div id="chat-container">
-  <ul id="messages"></ul>
-  <form id="message-form">
-    <input id="message-input" type="text" autocomplete="off">
-    <button>Send</button>
-  </form>
-</div>
-
-<script>
-  var messages = document.getElementById('messages');
-  var form = document.getElementById('message-form');
-  var input = document.getElementById('message-input');
-
-  form.addEventListener('submit', function(event) {
-    event.preventDefault();
-    if (input.value) {
-      var li = document.createElement('li');
-      li.innerText = input.value;
-      messages.appendChild(li);
-      input.value = '';
-    }
-  });
-</script>
-
-  </body>
+		$('#send').click(function() {
+			var message = $('#message').val();
+			messages.push(message);
+			displayMessages();
+			$('#message').val('');
+			return false;
+		});
+	</script>
+</body>
 </html>
